@@ -34,6 +34,8 @@
                 if (this.readyState == 4 && this.status == 200) {
                     const equipmentList = document.getElementById('equipmentList');
                     const results = JSON.parse(http.responseText);
+
+                    // Create the checkboxes and labels
                     results.forEach(e => {
                         const checkbox = document.createElement('input');
 
@@ -50,6 +52,7 @@
                         item.appendChild(checkbox);
                         item.appendChild(label);
 
+                        // Append to the parent list
                         equipmentList.appendChild(item);
                     });
                 }
@@ -60,6 +63,7 @@
             const button = document.getElementById('completeButton');
 
             button.addEventListener('click', function (e) {
+                // Get all the selected checkboxes to figure out the ids
                 const selectedCheckboxes = document.querySelectorAll('input[type=checkbox]:checked');
                 let payload = {
                     selectedEquipment: Array.prototype.map.call(selectedCheckboxes, e => e.dataset.Id)
