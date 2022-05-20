@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<style>
+    .required {
+        color: red;
+    }
+</style>
+
+<h1>Pre-shift Checklist</h1>
+<div class="form-group">
+    <label for="name">
+        <b>Worker</b> <span class="required">*</span>
+    </label>
+    <input type="text" id="name" class="form-control" placeholder="Enter your name here" />
+</div>
+<div class="form-group">
+    <label for="equipmentList">Select your equipment</label>
+    <ul id="equipmentList" class="list-group-flush"></ul>
+</div>
+<button id="completeButton" class="btn btn-primary">Complete</button>
+
+<script type="text/javascript">
+    class IndexPage {
+        loadEquipmentList() {
+            const http = new XMLHttpRequest();
+            const url = `Home/GetEquipmentChecklist`;
+
+            http.open('GET', url);
+            http.send();
+
+            http.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    const equipmentList = document.getElementById('equipmentList');
+                    const results = JSON.parse(http.responseText);
+                    results.forEach(e => {
+                        const checkbox = document.createElement('input');
+
+                        checkbox.id = e.Id;
+                        checkbox.type = 'checkbox';
+                        checkbox.setAttribute('data-id', e.Id);
+
+                        const label = document.createElement('label');
+
+                        label.textContent = e.Name;
+
+                        const item = document.createElement('li');
+
+                        item.appendChild(checkbox);
+                        item.appendChild(label);
+
+                        equipmentList.appendChild(item);
+                    });
+                }
+            }
+        }
+
+        setupCompleteButton() {
+            const button = document.getElementById('completeButton');
+
+            button.addEventListener('click', function (e) {
+                const selectedCheckboxes = document.querySelectorAll('input[type=checkbox]:checked');
+                let payload = {
+                    selectedEquipment: Array.prototype.map.call(selectedCheckboxes, e => e.dataset.id)
+                };
+
+                console.log(JSON.stringify(payload));
+            });
+        }
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var Index = new IndexPage();
+
+        Index.loadEquipmentList();
+        Index.setupCompleteButton();
+    });
+</script>
