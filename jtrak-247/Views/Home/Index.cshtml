@@ -65,16 +65,31 @@
         setupCompleteButton() {
             const button = document.getElementById('completeButton');
 
+            // Create an error message
+            let errorMessage = 'Worker field is empty';
+
             button.addEventListener('click', function (e) {
-                // Get all the selected checkboxes to figure out the ids
-                const selectedCheckboxes = document.querySelectorAll('input[type=checkbox]:checked');
-                let payload = {
 
-                    // Convert Nodelist of checkbox ids into an array
-                    selectedEquipment: Array.prototype.map.call(selectedCheckboxes, e => e.dataset.id.toString())
-                };
+                // Get the worker's name
+                const workerField = document.getElementById('name').value;
 
-                console.log(JSON.stringify(payload));
+                // Check if the worker field is empty
+                if (workerField.toString() === '' || workerField === null) {
+                    alert(errorMessage);
+                }
+                else {
+                    // Get all the selected checkboxes to figure out the ids
+                    const selectedCheckboxes = document.querySelectorAll('input[type=checkbox]:checked');
+                    let payload = {
+                        // Add worker's name
+                        worker: workerField,
+
+                        // Convert Nodelist of checkbox ids into an array
+                        selectedEquipment: Array.prototype.map.call(selectedCheckboxes, e => e.dataset.id.toString())
+                    };
+
+                    console.log(JSON.stringify(payload));
+                } 
             });
         }
     };
