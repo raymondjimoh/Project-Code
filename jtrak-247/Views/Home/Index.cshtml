@@ -47,6 +47,9 @@
 
                         label.textContent = e.Name;
 
+                        // Add 'for' attribute to label 
+                        label.setAttribute('for', e.Id);
+
                         const item = document.createElement('li');
 
                         item.appendChild(checkbox);
