@@ -69,7 +69,9 @@
                 // Get all the selected checkboxes to figure out the ids
                 const selectedCheckboxes = document.querySelectorAll('input[type=checkbox]:checked');
                 let payload = {
-                    selectedEquipment: Array.prototype.map.call(selectedCheckboxes, e => e.dataset.Id)
+
+                    // Convert Nodelist of checkbox ids into an array
+                    selectedEquipment: Array.prototype.map.call(selectedCheckboxes, e => e.dataset.id.toString())
                 };
 
                 console.log(JSON.stringify(payload));
